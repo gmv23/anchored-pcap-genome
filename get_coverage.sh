@@ -11,13 +11,17 @@ base="pb_filter"
 
 echo "Indexing"
 bwa index -a bwtsw $ref
+#Merge reads into one fasta file
 echo "Concatenating"
 cat $reads > ./merged_reads.fasta
 echo "Mapping reads"
 bwa mem -t 16 $ref merged_reads.fasta > aligned_$base.sam
+rm merged_reads.fasta #Get rid of file with merged reads
 
 #Convert to bam
-samtools view -b -h -S aligned_pb.sam > aligned_$base.bam #Change pb to base
+samtools view -b -h -S aligned_$base.sam > aligned_$base.bam 
+rm aligned_$base.sam #Get rid of big sam file
+
 #Filter on mapping quality
 samtools view -b -q 20 aligned_$base.bam > aligned_${base}_filter.bam
 #Sort,index,print stats
@@ -26,6 +30,9 @@ samtools index aligned_${base}_sorted.bam
 samtools flagstat aligned_${base}_sorted.bam > ${base}_flag_stats.txt
 samtools idxstats aligned_${base}_sorted.bam > ${base}_reads_to_scaffold.txt
 
+#Get rid of intermediate bam files
+rm aligned_$base.bam
+rm aligned_${base}_filter.bam
 
 #Get genome coverage by site with bedtools
 bedtools genomecov  -ibam aligned_${base}_sorted.bam -d -g $ref > ${base}_cov.txt
