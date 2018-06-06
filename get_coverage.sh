@@ -4,9 +4,9 @@
 # and then get coverage in non-overlapping 1kb windows
 
 ## Change paths to ref and reads ##
-ref="/home/greg/genome_pcap/pacbio/HaploMerger2_20161205/run_0326/canu1wm_A_ref.fa"
-reads="/home/greg/genome_pcap/pacbio/reads/*"
-base="pb_filter"
+ref="Falcon_Pcap.fasta"
+reads="/home/greg/genome_pcap/reads/pacbio/*"
+base="falcon"
 ###################################
 
 echo "Indexing"
@@ -19,7 +19,7 @@ bwa mem -t 16 $ref merged_reads.fasta > aligned_$base.sam
 rm merged_reads.fasta #Get rid of file with merged reads
 
 #Convert to bam
-samtools view -b -h -S aligned_$base.sam > aligned_$base.bam 
+samtools view -b -h -S aligned_$base.sam > aligned_$base.bam
 rm aligned_$base.sam #Get rid of big sam file
 
 #Filter on mapping quality
@@ -31,13 +31,13 @@ samtools flagstat aligned_${base}_sorted.bam > ${base}_flag_stats.txt
 samtools idxstats aligned_${base}_sorted.bam > ${base}_reads_to_scaffold.txt
 
 #Get rid of intermediate bam files
-rm aligned_$base.bam
-rm aligned_${base}_filter.bam
+#rm aligned_$base.bam
+#rm aligned_${base}_filter.bam
 
 #Get genome coverage by site with bedtools
 bedtools genomecov  -ibam aligned_${base}_sorted.bam -d -g $ref > ${base}_cov.txt
-python bin_coverage.py ${base}_cov.txt > $(base)_cov_bin.txt
-
+python /home/greg/genome_pcap/scripts/bin_coverage.py ${base}_cov.txt ${base}_cov_bin.txt
+Rscript /home/greg/genome_pcap/scripts/plot_coverage_hist.R ${base}_cov_bin.txt
 
 
 

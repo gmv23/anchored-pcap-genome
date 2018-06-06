@@ -97,11 +97,57 @@ bash hm.batchB5.merge_paired_and_unpaired_sequences ${base}wm2_A
 rm -r ${base}wm2_A.${base}wm2_Ax.result/raw.axt #Get rid of large temporary files
 
 echo "Running haplomerger batch D -- removing tandem misassemblies"
-paste <(echo "Time is") <(date +%T)
 
+echo "Round 1"
+paste <(echo "Time is") <(date +%T)
 bash hm.batchD1.initiation_and_all_lastz ${base}wm2_A_ref
 bash hm.batchD2.chainNet_and_netToMaf ${base}wm2_A_ref
-bash hm.batchD3.remove_tandem_assemblies ${base}wm2_A_ref
-
+sed 's/filterAli=2500/filterAli=4000/' hm.batchD3.remove_tandem_assemblies > hm.batchD3.remove_tandem_assemblies1
+sed -i 's/minLen=2500/minLen=5000/' hm.batchD3.remove_tandem_assemblies1
+bash hm.batchD3.remove_tandem_assemblies1 ${base}wm2_A_ref
 rm -r ${base}wm2_A_ref.${base}wm2_A_refx.result/raw.axt #Get rid of large temporary files
+
+#Rename log files
+mv _D1.all_lastz.log _D1.all_lastz.log1
+mv _D1.initiation.log _D1.initiation.log1
+mv _D2.axtChainRecipBestNet.log _D2.axtChainRecipBestNet.log1
+mv _D3.tandem_removal_excised_seq.fa _D3.tandem_removal_excised_seq1.fa
+mv _D3.tandem_removal.log _D3.tandem_removal.log1
+
+
+echo "Round 2"
+paste <(echo "Time is") <(date +%T)
+cp ${base}wm2_A_ref_D.fa.gz ${base}wm21_A_ref.fa.gz
+bash hm.batchD1.initiation_and_all_lastz ${base}wm21_A_ref
+bash hm.batchD2.chainNet_and_netToMaf ${base}wm21_A_ref
+sed 's/filterAli=2500/filterAli=2400/' hm.batchD3.remove_tandem_assemblies > hm.batchD3.remove_tandem_assemblies2
+sed -i 's/minLen=2500/minLen=3000/' hm.batchD3.remove_tandem_assemblies2
+bash hm.batchD3.remove_tandem_assemblies2 ${base}wm21_A_ref
+rm -r ${base}wm21_A_ref.${base}wm21_A_refx.result/raw.axt #Get rid of large temporary files
+
+#Rename log files
+mv _D1.all_lastz.log _D1.all_lastz.log2
+mv _D1.initiation.log _D1.initiation.log2
+mv _D2.axtChainRecipBestNet.log _D2.axtChainRecipBestNet.log2
+mv _D3.tandem_removal_excised_seq.fa _D3.tandem_removal_excised_seq2.fa
+mv _D3.tandem_removal.log _D3.tandem_removal.log2
+
+echo "Round 3"
+paste <(echo "Time is") <(date +%T)
+cp ${base}wm21_A_ref_D.fa.gz ${base}wm22_A_ref.fa.gz
+bash hm.batchD1.initiation_and_all_lastz ${base}wm22_A_ref
+bash hm.batchD2.chainNet_and_netToMaf ${base}wm22_A_ref
+sed 's/filterAli=2500/filterAli=1000/' hm.batchD3.remove_tandem_assemblies > hm.batchD3.remove_tandem_assemblies3
+sed -i 's/minLen=2500/minLen=1500/' hm.batchD3.remove_tandem_assemblies3
+bash hm.batchD3.remove_tandem_assemblies3 ${base}wm22_A_ref
+rm -r ${base}wm22_A_ref.${base}wm22_A_refx.result/raw.axt #Get rid of large temporary files
+
+#Rename log files
+mv _D1.all_lastz.log _D1.all_lastz.log3
+mv _D1.initiation.log _D1.initiation.log3
+mv _D2.axtChainRecipBestNet.log _D2.axtChainRecipBestNet.log3
+mv _D3.tandem_removal_excised_seq.fa _D3.tandem_removal_excised_seq3.fa
+mv _D3.tandem_removal.log _D3.tandem_removal.log3
+
+echo "All done"
 
