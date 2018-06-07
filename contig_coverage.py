@@ -28,6 +28,7 @@ for line in fh:
 	scaffold = line[0]
 	cov = int(line[2])
 	if scaffold not in scaffold_info.keys():
+		print scaffold
 		scaffold_info[scaffold] = [[cov],0,0,0,0]
 		scaffold_info[scaffold][get_range(cov,low,mid,high)+1] += 1
 	else:
