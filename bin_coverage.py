@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 #Take per base coverage as returned by bedtools and average it into non-overlapping windows
+#This script takes some time to run, there is probably a more efficient way to do this
 
 import sys
 

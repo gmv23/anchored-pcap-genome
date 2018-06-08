@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Goal of this script is to get:
+#  Goal of this script is to get file with:
 #  mean coverage for each contig
 #  percent bases low, haploid, diploid, high for each contig
 #  contig size
