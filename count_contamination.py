@@ -5,7 +5,7 @@
 # and return the percentage of nucleotides of each contig that match a bacterial genome
 
 cov_stats = "/home/greg/genome_pcap/get_coverage/falcon_wm22_coverage/coverage_stats.txt"
-blast_results = "/home/greg/genome_pcap/contamination/test3_out.txt"
+blast_results = "/home/greg/genome_pcap/contamination/bacteria_blast_out.txt"
 
 #First let's make dictionary of contig sizes
 

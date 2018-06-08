@@ -10,6 +10,10 @@ import sys
 [in_file, out_file, low, mid, high] = sys.argv[1::]
 [low, mid, high] = [int(x) for x in [low, mid, high]]
 
+print "low cutoff: %d" %low
+print "mid cutoff: %d" %mid
+print "high cutoff: %d" %high 
+
 def get_range(x, low, mid, high):
 	if x < low:
 		return 0
